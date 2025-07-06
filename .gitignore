@@ -1,0 +1,16 @@
+/checkpoints
+/checkpoints_92_97
+/checkpoints_lpr_classic
+/checkpoints_lpr_norm
+/checkpoints_lpr_pointwise
+/checkpoints_lpr_pw+relu_x2
+/checkpoints_pointwise+relu
+*.onnx
+/train
+/val
+/models
+/onnx
+/old
+/.venv
+/__pycache__
+*.pyc

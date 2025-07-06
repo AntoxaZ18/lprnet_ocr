@@ -1,0 +1,10 @@
+[Read decode video] -> [transform] -> [track]->[crop] -> [enchance + transform] -> [queue] -> [display]
+                                   |                          |
+                                   V                          V
+                                [yolo]                  [LPRNet+STN]
+                                   |                          |
+                                   V                          V
+                                [queue]                    [queue]
+                                   |                          |
+                                   V                          V
+                                [src thread]            [src thread]
