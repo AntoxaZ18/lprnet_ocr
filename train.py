@@ -28,7 +28,7 @@ def initialize_lprnet_weights(lpr_model):
 
 def set_seed(seed=42):
     torch.manual_seed(seed)             # Фиксируем seed для CPU
-    torch.cuda.manual_seed_all(seed)    # Для GPUclar
+    torch.cuda.manual_seed_all(seed)    # Для GPU
     np.random.seed(seed)
     random.seed(seed)
 
