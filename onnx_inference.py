@@ -1,4 +1,6 @@
 import cv2
+import argparse
+from dataset import CHARS
 from PIL import Image
 from time import time
 import numpy as np
@@ -6,23 +8,6 @@ import onnxruntime as ort
 from utils import decode_function, BeamDecoder
 
 
-print(ort.__version__)
-
-model_path = "stn_lpr_opt_2.onnx"
-
-CHARS = [
-     '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-     'A', 'B', 'E', 'K', 'M', 'H', 'O', 'P', 'C', 'T',
-     'Y', 'X', '-'
-]
-
-
-since = time()
-image = Image.open("cropped____.jpg")
-
-
-mean = np.array([0.496, 0.502, 0.504], dtype=np.float32)
-std = np.array([0.254, 0.2552, 0.2508], dtype=np.float32)
 
 def batch_transform(rgb_batch, mean, std):
     """
@@ -59,32 +44,49 @@ def batch_transform(rgb_batch, mean, std):
     return contiguous_transposed.astype(np.float32)
 
 
-sess_options = ort.SessionOptions()
+def onnx_benchmark(model_path: str, image_path: str, runs: int) -> float:
+    """
+    Возвращает среднее время инференса в мс
+    """
+    sess_options = ort.SessionOptions()
+
+    session = ort.InferenceSession(
+        model_path, providers=["CPUExecutionProvider"], sess_options=sess_options
+    )
+    input_name = session.get_inputs()[0].name
+
+    batch_size = 8
+
+    mean = np.array([0.496, 0.502, 0.504], dtype=np.float32)
+    std = np.array([0.254, 0.2552, 0.2508], dtype=np.float32)
+
+    images = np.stack([image.copy() for i in range(batch_size)])
+    times = []
+
+    for _ in range(runs):
+        start = time()
+        data = batch_transform(images, mean, std)
+
+        predictions = session.run(None, {input_name: data})
+        labels, prob, pred_labels = decode_function(predictions[0], CHARS, BeamDecoder)
+        times.append(time() - start)
+        print(labels)
+
+    return sum(times) * 1000 / len(times) / runs
 
 
-session = ort.InferenceSession(
-    model_path, providers=['CPUExecutionProvider'], sess_options=sess_options
-)  
-model_inputs = session.get_inputs()
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--image", type=str, help="path to image")
+    parser.add_argument("--model", type=str, help="path to onnx model")
+    parser.add_argument("--runs", type=int, help="number of model runs", default=10)
 
-# batch = np.stack([transform(image) for i in range(8)])
+    args = parser.parse_args()
 
-mean = [0.496, 0.502, 0.504]
-std = [0.254, 0.2552, 0.2508]
+    model = args.model
+    image = Image.open(args.image)
+    runs = args.runs
 
-times = []
+    time_per_image = onnx_benchmark(model, image, runs)
 
-BATCH_SIZE = 10
-
-images = np.stack([image.copy() for i in range(BATCH_SIZE)])
-
-for i in range(1):
-    start = time()
-    data = batch_transform(images, mean, std)
-
-    predictions = session.run(None, {"input": data})
-    labels, prob, pred_labels = decode_function(predictions[0], CHARS, BeamDecoder)
-    times.append(time() - start)
-    print(labels)
-
-print(f"{sum(times) * 1000 / len(times) / BATCH_SIZE:.3f} ms")
+    print(f"per image: {time_per_image:.3f} ms")

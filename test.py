@@ -97,9 +97,6 @@ def calculate_mean_std(loader):
     return total_mean, total_std
 
 
-# calculate_mean_std(train_loader)
-
-
 num_epochs = 80
 start_epoch = 0
 
