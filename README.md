@@ -129,3 +129,6 @@ onnx_inference.py --model exported.onnx --image cropped____.jpg --runs 10
 STN помогает обрабатывать повернутые или искажённые номера, повышая общую точность.
 Получившиеся метрики:
 
+word accuracy: 95.0317 %
+char accuracy: 98.6158 %
+
