@@ -1,32 +1,59 @@
-import torch
-from torch.utils.data import Dataset, DataLoader
 import os
-from PIL import Image
 import random
 
+import numpy as np
+import torch
+from PIL import Image
+from torch.utils.data import DataLoader, Dataset
+
 CHARS = [
-     '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-     'A', 'B', 'E', 'K', 'M', 'H', 'O', 'P', 'C', 'T',
-     'Y', 'X', '-'
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "A",
+    "B",
+    "E",
+    "K",
+    "M",
+    "H",
+    "O",
+    "P",
+    "C",
+    "T",
+    "Y",
+    "X",
+    "-",
 ]
 
-CHARS_DICT = {char:i for i, char in enumerate(CHARS)}
+CHARS_DICT = {char: i for i, char in enumerate(CHARS)}
 
 
 def collate_fn(batch):
-    images, labels = zip(*batch)
+    imgs = []
+    labels = []
+    lengths = []
+    for _, sample in enumerate(batch):
+        img, label, length = sample
+        imgs.append(img)
+        labels.extend(label)
+        lengths.append(length)
+    labels = np.asarray(labels).flatten().astype(np.int32)
 
-    # Собираем батч
-    images_tensor = torch.stack(images, dim=0)  # [B, C, H, W]
-    labels_tensor = torch.nn.utils.rnn.pad_sequence(labels, batch_first=True, padding_value=0)
+    return (torch.stack(imgs, 0), torch.from_numpy(labels), lengths)
 
-    return images_tensor, labels_tensor
 
 class PlateDataset(Dataset):
     def __init__(self, root_dir, transform=None):
         self.root_dir = root_dir
         self.transform = transform
-        
+
         self.files = os.listdir(self.root_dir)
         random.shuffle(self.files)
 
@@ -36,7 +63,7 @@ class PlateDataset(Dataset):
     def __getitem__(self, idx):
         img_name = self.files[idx]
         img_path = os.path.join(self.root_dir, img_name)
-        label = img_name.split('.')[0]
+        label = img_name.split(".")[0]
         image = Image.open(img_path)
         if self.transform:
             image = self.transform(image)

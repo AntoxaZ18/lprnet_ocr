@@ -75,14 +75,22 @@ Car_plate_OCR_dataset - это набор данных из примерно 45,
 
 # Обучение
 Для обучения через make:
-Через Python
 
-где файл конфигурации словаря в формате
+   Параметры запуска скрипта
+
+   -lr - начальный learning rate default=0.001
+   -proceed продолжить обучение из чекпоинта default = True
+   -batch размер батча  default=128
+   -epochs количество эпох default=100
+
+ ```Powershell
+   python train.py 
+   ```
 
 # Инференс
 Результат будет отображать распознанный текст номера.
-
-
+Пример изображения для распознавания
+![plot](test_image.jpg)
 
 # Оценка
 Можно оценить модель по метрикам:
@@ -112,7 +120,7 @@ lpr - путь до LPRnet модели
 out - путь к экспортированной модели
 
    ```Powershell
-   python export_onnx.py --stn stn_best.pth --lpr lpr_best.pth --out exported.onnx
+   python export_onnx.py --stn stn_best.pth --lpr lpr_best.pth --onnx exported.onnx
    ```
 
 # Тест производительности ONNX

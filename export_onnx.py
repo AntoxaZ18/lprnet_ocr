@@ -75,7 +75,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--stn", type=str, help="path to stn model")
     parser.add_argument("--lpr", type=str, help="path to lpr model")
-    parser.add_argument("--out", type=str, help="path to fused onnx model")
+    parser.add_argument("--onnx", type=str, help="path to fused onnx model")
 
     args = parser.parse_args()
 
