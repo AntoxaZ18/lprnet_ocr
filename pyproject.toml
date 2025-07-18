@@ -29,6 +29,7 @@ onnx-simplifier = "^0.4.36"
 opencv-python = "^4.11.0.86"
 onnxruntime = "^1.22.0"
 dvc = "^3.61.0"
+dvclive = "^3.48.3"
 
 
 

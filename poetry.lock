@@ -1002,6 +1002,46 @@ docs = ["mkdocs (>=1.5.2,<2)", "mkdocs-gen-files (>=0.5.0,<1)", "mkdocs-material
 tests = ["pytest (>=7,<9)", "pytest-celery (<1)", "pytest-cov (>=4.1.0)", "pytest-mock", "pytest-rerunfailures", "pytest-sugar", "pytest-test-utils (>=0.0.6)"]
 
 [[package]]
+name = "dvclive"
+version = "3.48.3"
+description = "Experiments logger for ML projects."
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "dvclive-3.48.3-py3-none-any.whl", hash = "sha256:a7280fa610f872767e572a9ef03c430b2aa0da04af8ba644ec5bc2dd8bda620b"},
+    {file = "dvclive-3.48.3.tar.gz", hash = "sha256:642f366ffe9e21ec15a249a605632ebebc0badd85750b8ea9ab88a9ab85ee020"},
+]
+
+[package.dependencies]
+dvc = ">=3.48.4"
+dvc-render = ">=1.0.0,<2"
+dvc-studio-client = ">=0.20,<1"
+funcy = "*"
+gto = "*"
+psutil = "*"
+pynvml = "*"
+"ruamel.yaml" = "*"
+scmrepo = ">=3,<4"
+
+[package.extras]
+all = ["dvclive[fastai,huggingface,image,lgbm,lightning,markdown,mmcv,optuna,plots,tf,xgb]"]
+dev = ["dvclive[all,tests]", "mypy (==1.15.0)", "types-PyYAML"]
+fastai = ["fastai"]
+huggingface = ["datasets", "transformers"]
+image = ["numpy", "pillow"]
+lgbm = ["lightgbm"]
+lightning = ["jsonargparse[signatures] (>=4.26.1)", "lightning (>=2.0)", "torch"]
+markdown = ["matplotlib"]
+mmcv = ["mmcv"]
+optuna = ["optuna"]
+plots = ["numpy", "pandas", "scikit-learn"]
+sklearn = ["scikit-learn (>=1.5.0)"]
+tests = ["dpath", "dvclive[image,markdown,plots]", "ipython", "pytest (>=7.2.0,<9.0)", "pytest-cov (>=3.0.0,<7.0)", "pytest-mock (>=3.8.2,<4.0)", "pytest-sugar (>=0.9.6,<2.0)", "pytest_voluptuous", "tf-keras", "transformers[torch]"]
+tf = ["tensorflow"]
+xgb = ["xgboost"]
+
+[[package]]
 name = "entrypoints"
 version = "0.4"
 description = "Discover and load entry points from installed packages."
@@ -1961,6 +2001,18 @@ files = [
 ]
 
 [[package]]
+name = "nvidia-ml-py"
+version = "12.575.51"
+description = "Python Bindings for the NVIDIA Management Library"
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "nvidia_ml_py-12.575.51-py3-none-any.whl", hash = "sha256:eb8641800d98ce40a22f479873f34b482e214a7e80349c63be51c3919845446e"},
+    {file = "nvidia_ml_py-12.575.51.tar.gz", hash = "sha256:6490e93fea99eb4e966327ae18c6eec6256194c921f23459c8767aee28c54581"},
+]
+
+[[package]]
 name = "nvidia-nccl-cu11"
 version = "2.21.5"
 description = "NVIDIA Collective Communication Library (NCCL) Runtime"
@@ -2861,6 +2913,24 @@ files = [
 ]
 
 [[package]]
+name = "pynvml"
+version = "12.0.0"
+description = "Python utilities for the NVIDIA Management Library"
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "pynvml-12.0.0-py3-none-any.whl", hash = "sha256:fdff84b62a27dbe98e08e1a647eb77342bef1aebe0878bcd15e99a83fcbecb9e"},
+    {file = "pynvml-12.0.0.tar.gz", hash = "sha256:299ce2451a6a17e6822d6faee750103e25b415f06f59abb8db65d30f794166f5"},
+]
+
+[package.dependencies]
+nvidia-ml-py = ">=12.0.0,<13.0.0a0"
+
+[package.extras]
+test = ["pytest (>=3.6)", "pytest-cov", "pytest-runner"]
+
+[[package]]
 name = "pyparsing"
 version = "3.2.3"
 description = "pyparsing module - Classes and methods to define and execute parsing grammars"
@@ -3738,4 +3808,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11"
-content-hash = "9c96152d6a1d9a926df79b7ca9de503c13082849fd072c3f34271fd90db5ec12"
+content-hash = "9270559840d5173b905d91e634b8aa57f945265fb2e9142b0cc9182c97644595"
