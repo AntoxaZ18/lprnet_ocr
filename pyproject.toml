@@ -28,6 +28,7 @@ onnxoptimizer = "^0.3.13"
 onnx-simplifier = "^0.4.36"
 opencv-python = "^4.11.0.86"
 onnxruntime = "^1.22.0"
+dvc = "^3.61.0"
 
 
 
